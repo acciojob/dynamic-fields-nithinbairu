@@ -2,36 +2,35 @@ import React, { useState } from "react";
 import './../styles/App.css';
 
 const App = () => {
-  // state holds array of objects (each with name and age)
   const [inputFields, setInputFields] = useState([{ name: "", age: "" }]);
 
-  // Add new field
-  function addMoreBtn(e) {
+  // Add a new name-age pair
+  const addMoreBtn = (e) => {
     e.preventDefault();
-    setInputFields((prev) => [...prev, { name: "", age: "" }]);
-  }
+    setInputFields([...inputFields, { name: "", age: "" }]);
+  };
 
-  // Remove specific field
-  function removeField(index) {
+  // Remove a field by index
+  const remove = (index) => {
     setInputFields((prev) => prev.filter((_, i) => i !== index));
-  }
+  };
 
-  // Handle input change for each field
-  function handleChange(index, event) {
-    const { name, value } = event.target;
+  // Update name or age
+  const handleChange = (index, e) => {
+    const { name, value } = e.target;
     const updatedFields = [...inputFields];
     updatedFields[index][name] = value;
     setInputFields(updatedFields);
-  }
+  };
 
-  // Submit form
-  function submit(e) {
+  // On submit: log only the array (not with text)
+  const submit = (e) => {
     e.preventDefault();
-    console.log("Submitted fields:", inputFields);
-  }
+    console.log(inputFields);
+  };
 
   return (
-    <div id="main">
+    <div>
       <form onSubmit={submit}>
         <ul>
           {inputFields.map((field, index) => (
@@ -48,17 +47,19 @@ const App = () => {
                 value={field.age}
                 onChange={(e) => handleChange(index, e)}
               />
-              <button type="button" onClick={() => removeField(index)}>
+              <button type="button" onClick={() => remove(index)}>
                 Remove
               </button>
             </li>
           ))}
         </ul>
 
+        <br />
         <button type="button" onClick={addMoreBtn}>
-          Add More
+          Add More..
         </button>
         <button type="submit">Submit</button>
+        <p>After Clicking</p>
       </form>
     </div>
   );
